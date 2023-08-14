@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * main - application de prompt
+ * Return: 0 si tout s'est bien passé
+*/
 int main(void)
 {
     char *line = NULL;       // Pointeur pour stocker l'entrée de l'utilisateur
