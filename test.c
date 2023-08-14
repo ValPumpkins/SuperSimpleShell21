@@ -13,7 +13,7 @@ int main(void)
     my_pid = getpid();
 	my_ppid = getppid();
 
-    printf("%u\n", my_pid);
-	printf("%u\n", my_ppid);
+    printf("PID : %u\n", my_pid);
+	printf("PPID : %u\n", my_ppid);
     return (0);
 }
