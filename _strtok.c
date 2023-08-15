@@ -3,28 +3,11 @@
 #include <string.h>
 
 /**
- * isSeparator - check if char is a separator from array
- * @c: given char
- * Return: true or false (1 or 0)
-*/
-int isSeparator(char c)
-{
-	char sep[] = " /"; // tableau de séparateurs
-	int i;
-
-	for (i = 0; sep[i] != '\0'; i++) // parcours du tableau
-		if (c == sep[i]) // si le caractére est un séparateur
-			return (1); // retourne 1
-
-	return (0); // sinon retourne 0
-}
-
-/**
  * wordCount - count word len
  * @str: given string
  * Return: word len
 */
-int wordCount(char *str)
+int wordCount(char *str, const char sep)
 {
 	int i, count = 0;
 
@@ -32,7 +15,7 @@ int wordCount(char *str)
 		return (0);
 
 	for (i = 0; str[i] != '\0'; i++) // parcours de la chaine
-		if (!isSeparator(str[i]) && (i == 0 || isSeparator(str[i - 1]))) // si le caractére n'est pas un séparateur
+		if (str[i] != sep && (i == 0 || str[i - 1] == sep)) // si le caractére n'est pas un séparateur
 			count++; // incrémente le compteur
 
 	return (count); // retourne le nombre de mots séparés
@@ -43,7 +26,7 @@ int wordCount(char *str)
  * @str: given string
  * Return: new pointer to array
 */
-char **strtow(char *str)
+char **_strtok(char *str, const char sep)
 {
 	char **words;
 	/* sPos = str position - wPos = word position - aPos = array position*/
@@ -52,18 +35,18 @@ char **strtow(char *str)
 	if (str == NULL || *str == '\0')
 		return (NULL);
 
-	words = malloc((wordCount(str) + 1) * sizeof(char *)); // alloue la mémoire pour le tableau
+	words = malloc((wordCount(str, sep) + 1) * sizeof(char *)); // alloue la mémoire pour le tableau
 	if (words == NULL)
 		return (NULL);
 
 	for (sPos = 0; str[sPos] != '\0'; sPos++) // parcours de la chaine
 	{
-		if (!isSeparator(str[sPos]) && (sPos == 0 || isSeparator(str[sPos - 1]))) // si le caractére n'est pas un séparateur
+		if (str[sPos] != sep && (sPos == 0 || str[sPos - 1] == sep)) // si le caractére n'est pas un séparateur
 		{
 			wordLen = 0; // réinitialise le compteur de lettres dans le mot
 			letterFound = 1; // si une lettre a été trouvée
 
-			for (wPos = sPos; !isSeparator(str[wPos]) && str[wPos] != '\0'; wPos++) // parcours du mot
+			for (wPos = sPos; str[wPos] != sep && str[wPos] != '\0'; wPos++) // parcours du mot
 				wordLen++; // incrémente le compteur de lettres dans le mot
 
 			words[aPos] = malloc((wordLen + 1) * sizeof(char)); // alloue la mémoire pour le mot

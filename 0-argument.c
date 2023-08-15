@@ -9,12 +9,13 @@
 */
 int main(int argc, char ** argv)
 {
-	argv++; // on skip le premier argument
+	int i = 0;
 
 	while (*argv != NULL) // tant que l'on peut avancer dans argv
 	{
-		printf("%s\n", *argv); // on imprime l'argument courant
+		printf("argv[%d]%s\n", i, *argv); // on imprime l'argument courant
 		argv++; // on passe au prochain argument
+		i++;
 	}
 
 	return (0);
