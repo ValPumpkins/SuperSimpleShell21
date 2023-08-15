@@ -2,69 +2,42 @@
 #include <stdlib.h>
 #include <string.h>
 
-/**
- * wordCount - count word len
- * @str: given string
- * Return: word len
-*/
-int wordCount(char *str, const char sep)
+char *_strtok(char *str, const char *delimiters)
 {
-	int i, count = 0;
+    // Variable statique pour suivre la position dans la chaîne
+    static char *nextToken = NULL;
 
-	if (!str)
-		return (0);
+    // Si une nouvelle chaîne est fournie, définissez la position au début de la nouvelle chaîne
+    if (str != NULL)
+        nextToken = str;
+    // Si aucune nouvelle chaîne n'est fournie et qu'aucune position n'est enregistrée, retournez NULL
+    else if (nextToken == NULL)
+        return NULL;
 
-	for (i = 0; str[i] != '\0'; i++) // parcours de la chaine
-		if (str[i] != sep && (i == 0 || str[i - 1] == sep)) // si le caractére n'est pas un séparateur
-			count++; // incrémente le compteur
+    // Sauvegardez la position de début du jeton
+    char *start = nextToken;
 
-	return (count); // retourne le nombre de mots séparés
-}
+    // Ignorer les caractères de délimiteur en début de chaîne
+    while (*nextToken != '\0' && strchr(delimiters, *nextToken) != NULL)
+        nextToken++;
 
-/**
- * strtow - seperate words
- * @str: given string
- * Return: new pointer to array
-*/
-char **_strtok(char *str, const char sep)
-{
-	char **words;
-	/* sPos = str position - wPos = word position - aPos = array position*/
-	int sPos, wPos, aPos = 0, count, wordLen, letterFound = 0;
+    // Si aucun autre caractère que les délimiteurs n'est trouvé, retournez NULL
+    if (*nextToken == '\0')
+    {
+        nextToken = NULL; // Réinitialisez la position pour l'appel suivant
+        return NULL;
+    }
 
-	if (str == NULL || *str == '\0')
-		return (NULL);
+    // Trouvez la fin du jeton en recherchant le prochain caractère de délimiteur
+    while (*nextToken != '\0' && strchr(delimiters, *nextToken) == NULL)
+        nextToken++;
 
-	words = malloc((wordCount(str, sep) + 1) * sizeof(char *)); // alloue la mémoire pour le tableau
-	if (words == NULL)
-		return (NULL);
+    // Si nous n'avons pas atteint la fin de la chaîne, terminez le jeton par un caractère nul
+    if (*nextToken != '\0')
+    {
+        *nextToken = '\0'; // Terminez le jeton par un caractère nul
+        nextToken++; // Passez au caractère suivant pour l'appel suivant
+    }
 
-	for (sPos = 0; str[sPos] != '\0'; sPos++) // parcours de la chaine
-	{
-		if (str[sPos] != sep && (sPos == 0 || str[sPos - 1] == sep)) // si le caractére n'est pas un séparateur
-		{
-			wordLen = 0; // réinitialise le compteur de lettres dans le mot
-			letterFound = 1; // si une lettre a été trouvée
-
-			for (wPos = sPos; str[wPos] != sep && str[wPos] != '\0'; wPos++) // parcours du mot
-				wordLen++; // incrémente le compteur de lettres dans le mot
-
-			words[aPos] = malloc((wordLen + 1) * sizeof(char)); // alloue la mémoire pour le mot
-			if (words[aPos] == NULL) // si le mot n'a pas pu âtre alloué
-			{
-				for (count = 0; count < aPos; count++) // parcours du tableau
-					free(words[count]); // libération de la mémoire de chaque mot
-				free(words); // libération de la mémoire du tableau
-				return (NULL);
-			}
-			strncpy(words[aPos], &str[sPos], wordLen); // copie le mot dans le tableau
-			words[aPos][wordLen] = '\0'; // ajoute le caractére de fin de chaine
-			aPos++;	// on passe au caractére suivant
-		}
-	}
-	if (letterFound == 0) // si aucune lettre a été trouvée
-		return (NULL);
-
-	words[aPos] = NULL; // ajoute le caractére de fin de tableau
-	return (words); // retourne le tableau
+    return start; // Retournez un pointeur vers le jeton trouvé
 }
