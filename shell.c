@@ -10,7 +10,9 @@
 */
 int isEmpty(const char *str)
 {
-	for (int i = 0; str[i] != '\0'; i++) /** Iterate through the string */
+	int i;
+
+	for (i = 0; str[i] != '\0'; i++) /** Iterate through the string */
 	{
 		if (str[i] != '\n')
 		return (0); /** Not empty*/
@@ -52,11 +54,14 @@ void executeCommand(const char *command)
 
 /**
 * main - Entry point
-*
+* @ac: Argument count
+* @av: Argument vector
 * Return: Always 0 (Success)
 */
-int main(void)
+int main(int ac, char **av)
 {
+	(void)ac; (void)av;
+
 	char *prompt = "SuperSimpleShell 🎈";
 	char *line = NULL;
 	ssize_t read;
@@ -89,6 +94,5 @@ int main(void)
 
 		free(line);
 	}
-
 	return (0);
 }
