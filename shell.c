@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include "main.h"
 
 /**
 * isEmpty - Checks if a string is empty
@@ -19,43 +16,13 @@ int isEmpty(const char *str)
 }
 
 /**
-* executeCommand - Executes a command
-* @command: command to execute
-*
-*/
-void executeCommand(const char *command)
-{
-	pid_t pid = fork();
-
-	if (pid == -1) /** Error */
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0) /** Child */
-	{
-		if (access(command, X_OK) == 0)  /** Check if the command exists */
-		{
-			execlp(command, command, (char *)NULL); /**Execute command using full path*/
-			perror("execlp");
-			exit(EXIT_FAILURE);
-		}
-		else /** if command is not excutable */
-		{
-			printf("%s\n", command); /** print input as text */
-			exit(EXIT_SUCCESS);
-		}
-	}
-	else
-		waitpid(pid, NULL, 0); /** Wait for the child process to finish */
-}
-
-/**
 * main - Entry point
+* @ac: argument count
+* @av: argument vector
 *
 * Return: Always 0 (Success)
 */
-int main(void)
+int main(int ac, char **av)
 {
 	char *prompt = "SuperSimpleShell 🎈";
 	char *line = NULL;
