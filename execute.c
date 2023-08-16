@@ -1,8 +1,8 @@
 #include "main.h"
 
-void execute(char *input)
+int execute(char *input)
 {
-    int status;
+    int status, exe;
 
     pid_t pid = fork();
 
@@ -27,11 +27,16 @@ void execute(char *input)
         }
         args[argCount] = NULL; // Null-terminate the argument list
 
-        execve(args[0], args, NULL);
+        exe = execve(args[0], args, NULL);
 
-        perror("Execve failed"); // Print an error if execve fails
+        // perror("error"); // Print an error if execve fails
+        if (exe < 0)
+            return (-1);
+
         exit(1);
     }
     else // Parent process
         wait(&status); // Wait for the child process to exit
+
+    return (1);
 }

@@ -8,7 +8,7 @@
 #include <sys/wait.h>
 #include <string.h>
 
-void execute(char *input);
+int execute(char *input);
 int check_env(char *input);
 
 #endif

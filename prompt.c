@@ -3,7 +3,9 @@
 
 int main(int ac, char **av)
 {
-    (void)ac; (void)av;
+    (void)ac;
+
+    int exe;
 
     while (1)
     {
@@ -21,15 +23,19 @@ int main(int ac, char **av)
         }
 
         // Supprimer les caractères d'espacement en début de ligne
+
         char *trimmed_input = input;
         while (*trimmed_input && (*trimmed_input == ' ' || *trimmed_input == '\t'))
             trimmed_input++;
 
         //Vérifier si la ligne est vide après suppression des espacements
         if (*trimmed_input != '\n')
-            execute(input);
+        {
+            exe = execute(input);
+            if (exe == -1)
+                perror(av[0]);
 
-        check_env(input);
+        }
 
         free(input);
     }
