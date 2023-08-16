@@ -29,6 +29,7 @@ int main(int ac, char **av)
         if (*trimmed_input != '\n')
             execute(input);
 
+        check_env(input);
 
         free(input);
     }

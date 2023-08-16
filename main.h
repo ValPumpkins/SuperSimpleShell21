@@ -9,5 +9,6 @@
 #include <string.h>
 
 void execute(char *input);
+int check_env(char *input);
 
 #endif

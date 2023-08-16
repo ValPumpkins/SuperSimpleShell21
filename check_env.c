@@ -1,48 +1,46 @@
-#include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
-int check_env(int argc, char **argv)
+int check_env(char *input)
 {
-    // Vérifie si au moins un argument (autre que le nom du programme) est fourni
-    if (argc < 2)
+    for (int i = 1; i < strlen(input); i++)
     {
-        printf("Utilisation : %s nom_de_fichier ...\n", argv[0]);
-        return 1;
-    }
+        char *token;
+        char *args[100]; // Assuming a maximum of 100 arguments
+        int argCount = 0;
 
-    // Parcours des arguments (noms de fichiers) fournis en ligne de commande
-    for (int i = 1; i < argc; i++)
-    {
-        // Récupère le nom du fichier à chercher dans le PATH
-        char *filename = argv[i];
+        token = strtok(input, " \t\n"); // Split by space, tab, or newline
 
-        // Tente de trouver l'exécutable dans le PATH
+        while (token != NULL)
+        {
+            args[argCount++] = token;
+            token = strtok(NULL, " \t\n");
+        }
+        args[argCount] = NULL; // Null-terminate the argument list
+
+        char *filename = args[0];
+
+        // Try to find the executable in the PATH
         char *path_env = getenv("PATH");
         if (path_env != NULL)
         {
-            // Duplique la variable d'environnement PATH pour la manipuler en toute sécurité
             char *path_copy = strdup(path_env);
-
-            // Découpe le PATH en répertoires en utilisant ":" comme séparateur
             char *token = strtok(path_copy, ":");
             while (token != NULL)
             {
-                // Construit le chemin complet du fichier en concaténant le répertoire et le nom de fichier
                 char full_path[1024];
                 snprintf(full_path, sizeof(full_path), "%s/%s", token, filename);
 
-                // Vérifie si le fichier existe et est exécutable
                 if (access(full_path, F_OK | X_OK) == 0)
                 {
-                    // Affiche le chemin complet si le fichier est trouvé et exécutable
                     printf("%s\n", full_path);
                     break;
                 }
 
-                // Passe au répertoire suivant dans le PATH
                 token = strtok(NULL, ":");
             }
-
-            // Libère la mémoire allouée pour la copie du PATH
             free(path_copy);
         }
     }
