@@ -28,6 +28,7 @@ int check_env(char *input)
         {
             char *path_copy = strdup(path_env);
             char *token = strtok(path_copy, ":");
+
             while (token != NULL)
             {
                 char full_path[1024];
@@ -41,9 +42,9 @@ int check_env(char *input)
 
                 token = strtok(NULL, ":");
             }
+
             free(path_copy);
         }
     }
-
     return 0;
 }
