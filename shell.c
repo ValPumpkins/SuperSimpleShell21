@@ -7,7 +7,9 @@
 */
 int isEmpty(const char *str)
 {
-	for (int i = 0; str[i] != '\0'; i++) /** Iterate through the string */
+	int i;
+
+	for (i = 0; str[i] != '\0'; i++) /** Iterate through the string */
 	{
 		if (str[i] != '\n')
 		return (0); /** Not empty*/
@@ -19,7 +21,6 @@ int isEmpty(const char *str)
 * main - Entry point
 * @ac: argument count
 * @av: argument vector
-*
 * Return: Always 0 (Success)
 */
 int main(int ac, char **av)
