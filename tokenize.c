@@ -7,25 +7,38 @@
 */
 char **tokenize(char *input)
 {
-	char *token;
-	char **args = NULL;
-	int argCount = 0;
+    char *token;
+    char **args = NULL;
+    unsigned int argCount = 0, i = 0;
 
-	args = (char **)malloc(100 * sizeof(char *));
-	if (args == NULL)
-	{
-		perror("Memory allocation failed");
-		exit(1);
-	}
+    args = malloc(sizeof(char *));
+    if (args == NULL)
+    {
+        perror("Memory allocation failed");
+        exit(1);
+    }
 
-	token = strtok(input, " \t\n");
+    token = strtok(input, " \t\n");
+    if (token == NULL)
+    {
+        free(args);
+        exit(EXIT_FAILURE);
+    }
 
-	while (token != NULL)
-	{
-		args[argCount++] = token;
-		token = strtok(NULL, " \t\n");
-	}
-	args[argCount] = NULL;
+    while (token != NULL)
+    {
+		args = realloc(args, i * sizeof(char *));
+		if (args == NULL)
+		{
+			perror("Memory reallocation failed");
+			exit(1);
+		}
+		i++;
 
-	return (args);
+        args[argCount++] = strdup(token);
+        token = strtok(NULL, " \t\n");
+    }
+    args[argCount] = NULL;
+
+    return args;
 }

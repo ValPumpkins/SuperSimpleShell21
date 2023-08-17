@@ -1,4 +1,17 @@
 #include "main.h"
+#include <ctype.h>
+/*
+int is_whitespace(char *str)
+{
+    while (*str)
+    {
+        if (!isspace((unsigned char)*str))
+            return 0;
+        str++;
+    }
+    return 1;
+}
+*/
 
 /**
  * main - Shell
@@ -6,35 +19,32 @@
  * @av: Arguments
  * Return: 0
 */
-int main(int ac, char **av)
+int main(void)
 {
-	int exe;
-	char *input;
-	size_t bufsize;
+    int exe;
+    char *input = NULL;
+    char **args = NULL;
+    size_t bufsize = 0;
 
-	(void)ac;
+    while (1)
+    {
+        fflush(stdout);
 
-	while (1)
-	{
-		printf("(MyShell)$ ");
-		fflush(stdout);
+        if (getline(&input, &bufsize, stdin) == -1)
+            break;
 
-		input = NULL;
-		bufsize = 0;
+        if (*input == '\n')
+            continue;
 
-		if (getline(&input, &bufsize, stdin) == -1)
-		{
-			printf("Exiting...\n");
-			break;
-		}
+        args = tokenize(input);
 
-		if (*input == '\n')
-			continue;
+        exe = execute(input);
+        if (exe == -1)
+            perror(args[0]);
 
-		exe = execute(input);
-		if (exe == -1)
-			perror(av[0]);
-	}
-	free(input);
-	return (0);
+        free_args(args);
+    }
+
+    free(input);
+    return (0);
 }
