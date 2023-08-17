@@ -7,18 +7,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <sys/wait.h>
 
 /* Prototypes*/
 
-int main(int ac, char **av);
-void executeCommand(const char *command);
-void findFilePath(const char *filename);
-
-
-
-
-
-
+int execute(char *input);
+char *getEnv(const char *prompt, char *input);
+int isEmpty(const char *str);
+char **tokenize(char *input);
 
 #endif
