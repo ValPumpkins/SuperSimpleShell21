@@ -8,7 +8,7 @@
 */
 int main(int argc, char *argv[])
 {
-	char *prompt = "SuperSimpleShell 🎈";
+	char *prompt = "Shell 🎈";
 	char *line = NULL;
 	int exe;
 	size_t len = 0;
