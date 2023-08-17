@@ -1,43 +1,40 @@
 #include "main.h"
 
-
+/**
+ * main - Shell
+ * @ac: Number of arguments
+ * @av: Arguments
+ * Return: 0
+*/
 int main(int ac, char **av)
 {
-    (void)ac;
+	int exe;
+	char *input;
+	size_t bufsize;
 
-    int exe;
+	(void)ac;
 
-    while (1)
-    {
-        printf("(MyShell)$ ");
-        fflush(stdout);
+	while (1)
+	{
+		printf("(MyShell)$ ");
+		fflush(stdout);
 
-        char *input = NULL;
-        size_t bufsize = 0;
+		input = NULL;
+		bufsize = 0;
 
-        if (getline(&input, &bufsize, stdin) == -1)
-        {
-            printf("Exiting...\n");
-            free(input);
-            break;
-        }
+		if (getline(&input, &bufsize, stdin) == -1)
+		{
+			printf("Exiting...\n");
+			break;
+		}
 
-        // Supprimer les caractères d'espacement en début de ligne
+		if (*input == '\n')
+			continue;
 
-        char *trimmed_input = input;
-        while (*trimmed_input && (*trimmed_input == ' ' || *trimmed_input == '\t'))
-            trimmed_input++;
-
-        //Vérifier si la ligne est vide après suppression des espacements
-        if (*trimmed_input != '\n')
-        {
-            exe = execute(input);
-            if (exe == -1)
-                perror(av[0]);
-
-        }
-
-        free(input);
-    }
-    return 0;
+		exe = execute(input);
+		if (exe == -1)
+			perror(av[0]);
+	}
+	free(input);
+	return (0);
 }

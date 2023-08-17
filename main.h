@@ -9,6 +9,7 @@
 #include <string.h>
 
 int execute(char *input);
-int check_env(char *input);
+char *getEnv(char *input);
+char **tokenize(char *input);
 
 #endif
