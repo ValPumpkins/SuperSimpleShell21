@@ -5,7 +5,7 @@
 * @input: input string
 * Return: path of the executable
 */
-char *getEnv(const char *prompt, char *input)
+char *getEnv(char *input)
 {
 	char **args;
 	char *filename, *pathEnv, *pathCopy, *token, *result;
